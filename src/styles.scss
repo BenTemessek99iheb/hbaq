@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// ── GOOGLE FONTS ──────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+
+// ── CSS CUSTOM PROPERTIES ─────────────────────────────────────
+:root {
+  --color-bg:        #0A0906;
+  --color-surface:   #1C1A17;
+  --color-text:      #F2EBD9;
+  --color-muted:     #8C7B68;
+  --color-accent:    #C9993A;
+  --color-terra:     #B5613A;
+
+  --nav-height: 5rem;
+  --transition-luxury: cubic-bezier(0.25, 0.1, 0.0, 1.0);
+  --transition-cinematic: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+// ── BASE RESET ────────────────────────────────────────────────
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+// ── SCROLLBAR ─────────────────────────────────────────────────
+::-webkit-scrollbar        { width: 3px; }
+::-webkit-scrollbar-track  { background: var(--color-bg); }
+::-webkit-scrollbar-thumb  { background: var(--color-accent); border-radius: 2px; }
+
+// ── SELECTION ─────────────────────────────────────────────────
+::selection {
+  background: rgba(201, 153, 58, 0.2);
+  color: var(--color-text);
+}
+
+// ── LAYER: UTILITIES ──────────────────────────────────────────
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .grain-overlay {
+    &::after {
+      content: '';
+      position: fixed;
+      inset: -200%;
+      width: 400%;
+      height: 400%;
+      background-image: url('/assets/textures/grain.png');
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 9999;
+      animation: grain 8s steps(10) infinite;
+    }
+  }
+
+  .clip-reveal {
+    clip-path: inset(0 100% 0 0);
+    &.revealed { clip-path: inset(0 0% 0 0); }
+  }
+
+  .luxury-border {
+    border: 1px solid rgba(201, 153, 58, 0.15);
+  }
+}

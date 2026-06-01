@@ -1,0 +1,227 @@
+<!-- Product Detail Page -->
+<div class="product-page" *ngIf="product() as p; else notFound">
+
+  <!-- ── Breadcrumb ───────────────────────────────────────────── -->
+  <nav class="breadcrumb">
+    <a routerLink="/" class="breadcrumb__link">Home</a>
+    <span class="breadcrumb__sep">—</span>
+    <a routerLink="/collection" class="breadcrumb__link">Collection</a>
+    <span class="breadcrumb__sep">—</span>
+    <span class="breadcrumb__current">{{ p.name }}</span>
+  </nav>
+
+  <!-- ── Main Grid ────────────────────────────────────────────── -->
+  <div class="product-grid">
+
+    <!-- LEFT: GALLERY -->
+    <div class="gallery">
+
+      <!-- Thumbnails -->
+      <div class="gallery__thumbs">
+        <button
+          *ngFor="let img of p.images; let i = index; trackBy: trackByImage"
+          class="gallery__thumb"
+          [class.gallery__thumb--active]="selectedImage() === i"
+          (click)="selectImage(i)"
+          [attr.aria-label]="img.alt"
+        >
+          <img [src]="img.url" [alt]="img.alt" loading="lazy" />
+        </button>
+      </div>
+
+      <!-- Main image -->
+      <div class="gallery__main">
+
+        <div class="gallery__badges">
+          <span *ngIf="p.isNew" class="badge badge--new">New</span>
+          <span *ngIf="p.isLimited" class="badge badge--limited">Limited</span>
+          <span *ngIf="discount() > 0" class="badge badge--sale">
+            −{{ discount() }}%
+          </span>
+        </div>
+
+        <img
+          [src]="p.images[selectedImage()]?.url"
+          [alt]="p.images[selectedImage()]?.alt"
+          class="gallery__image"
+          loading="eager"
+        />
+
+        <!-- Counter -->
+        <div class="gallery__counter" *ngIf="p.images.length > 1">
+          {{ selectedImage() + 1 }} / {{ p.images.length }}
+        </div>
+
+        <!-- Prev -->
+        <button
+          *ngIf="p.images.length > 1"
+          class="gallery__arrow gallery__arrow--prev"
+          (click)="selectImage((selectedImage() - 1 + p.images.length) % p.images.length)"
+        >
+          ‹
+        </button>
+
+        <!-- Next -->
+        <button
+          *ngIf="p.images.length > 1"
+          class="gallery__arrow gallery__arrow--next"
+          (click)="selectImage((selectedImage() + 1) % p.images.length)"
+        >
+          ›
+        </button>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: INFO -->
+    <div class="product-info">
+
+      <div class="product-info__meta">
+        <span class="product-info__category">{{ categoryLabel() }}</span>
+        <span *ngIf="p.origin" class="product-info__origin">
+          {{ p.origin }}
+        </span>
+      </div>
+
+      <h1 class="product-info__name">{{ p.name }}</h1>
+
+      <!-- Rating -->
+      <div class="product-info__rating">
+        <div class="stars">
+          <span *ngFor="let s of stars()" class="star">★</span>
+        </div>
+        <span>({{ p.reviewCount }} reviews)</span>
+        <button (click)="activeTab.set('reviews')">Read reviews</button>
+      </div>
+
+      <!-- Price -->
+      <div class="product-info__price-row">
+        <span class="product-info__price">
+          {{ formatPrice(p.price) }}
+        </span>
+
+        <span *ngIf="p.originalPrice" class="product-info__original-price">
+          {{ formatPrice(p.originalPrice) }}
+        </span>
+      </div>
+
+      <!-- Description -->
+      <p class="product-info__desc">{{ p.description }}</p>
+
+      <!-- SIZE -->
+      <div class="size-selector">
+
+        <div class="size-selector__grid">
+          <button
+            *ngFor="let v of p.variants; trackBy: trackByVariantId"
+            class="size-btn"
+            [class.size-btn--active]="selectedVariant()?.id === v.id"
+            [class.size-btn--sold-out]="v.stock === 0"
+            [disabled]="v.stock === 0"
+            (click)="selectVariant(v)"
+          >
+            {{ v.size }}
+          </button>
+        </div>
+
+      </div>
+
+      <!-- STOCK -->
+      <div class="stock-status" *ngIf="selectedVariant() as v">
+
+        <span *ngIf="v.stock > 3">🟢 In stock</span>
+
+        <span *ngIf="v.stock > 0 && v.stock <= 3">
+          🟠 Only {{ v.stock }} left
+        </span>
+
+        <span *ngIf="v.stock === 0">🔴 Sold out</span>
+
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="product-actions">
+
+        <div class="qty-control">
+          <button (click)="decrementQty()" [disabled]="quantity() <= 1">−</button>
+          <span>{{ quantity() }}</span>
+          <button
+            (click)="incrementQty()"
+            [disabled]="quantity() >= (selectedVariant()?.stock ?? 1)"
+          >
+            +
+          </button>
+        </div>
+
+        <button (click)="addToCart()" [disabled]="!isInStock()">
+          {{ addedToCart() ? '✓ Added' : 'Add to Cart' }}
+        </button>
+
+        <button (click)="buyNow()" [disabled]="!isInStock()">
+          Buy Now
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="product-tabs">
+
+    <button (click)="activeTab.set('details')">Details</button>
+
+    <button (click)="activeTab.set('reviews')">
+      Reviews ({{ p.reviewCount }})
+    </button>
+
+    <div *ngIf="activeTab() === 'details'">
+      <ul>
+        <li *ngFor="let d of p.details">
+          {{ d }}
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="activeTab() === 'reviews'">
+
+      <div *ngIf="p.reviews.length === 0">
+        No reviews yet
+      </div>
+
+      <article *ngFor="let r of p.reviews; trackBy: trackByReviewId">
+        <h4>{{ r.title }}</h4>
+        <p>{{ r.body }}</p>
+      </article>
+
+    </div>
+
+  </div>
+
+  <!-- RELATED -->
+  <section *ngIf="relatedProducts().length > 0">
+
+    <h2>Related Products</h2>
+
+    <div>
+      <article
+        *ngFor="let rp of relatedProducts()"
+        (click)="navigateToProduct(rp.id)"
+      >
+        <img [src]="rp.images?.[0]?.url" />
+        <h3>{{ rp.name }}</h3>
+        <span>{{ formatPrice(rp.price) }}</span>
+      </article>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- NOT FOUND -->
+<ng-template #notFound>
+  <div>
+    <p>Product not found</p>
+    <a routerLink="/collection">Back</a>
+  </div>
+</ng-template>

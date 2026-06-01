@@ -1,0 +1,512 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// HERITAGE STORY — HBAQ
+// Luxury cultural exhibition • emotional centerpiece of the homepage
+// ─────────────────────────────────────────────────────────────────────────────
+
+.heritage {
+  background: var(--color-bg, #0a0906);
+  overflow: hidden;
+  position: relative;
+
+  // Subtle linen texture suggestion across full section
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        rgba(242, 235, 217, 0.012) 0px,
+        transparent 1px,
+        transparent 3px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(242, 235, 217, 0.008) 0px,
+        transparent 1px,
+        transparent 3px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > * { position: relative; z-index: 1; }
+
+  // ── MONUMENTAL ARABIC HERO ───────────────────────────
+  &__arabic-hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 5rem) clamp(3rem, 6vh, 5rem);
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1.4s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+
+    &--visible {
+      opacity: 1;
+
+      .heritage__arabic-word {
+        opacity: 1;
+        transform: none;
+      }
+
+      .heritage__arabic-meta,
+      .heritage__eyebrow {
+        opacity: 1;
+        transform: none;
+      }
+
+      .heritage__kufic-svg * {
+        animation-play-state: running;
+      }
+    }
+  }
+
+  // Kufic geometric grid overlay
+  &__kufic-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__kufic-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    // All stroked children animate in
+    line, rect, circle, polygon, polyline, path {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      animation: drawArchLine 3s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+      animation-play-state: paused;
+
+      @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{$i * 0.12}s;
+        }
+      }
+    }
+  }
+
+  // The main Arabic word
+  &__arabic-word {
+    font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: clamp(5rem, 16vw, 15rem);
+    font-weight: 700;
+    line-height: 1;
+    direction: rtl;
+    text-align: center;
+    letter-spacing: 0.03em;
+    opacity: 0;
+    transform: translateY(2.5rem);
+    transition:
+      opacity 1.2s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) 0.3s,
+      transform 1.2s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) 0.3s;
+
+    // Stone-carved / embossed gradient simulation
+    background: linear-gradient(
+      145deg,
+      rgba(242, 235, 217, 0.95) 0%,
+      var(--color-sand, #d4b896) 35%,
+      var(--color-accent, #C9993A) 65%,
+      rgba(181, 97, 58, 0.85) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    // Deep architectural shadow
+    filter: drop-shadow(0 6px 24px rgba(201, 153, 58, 0.12))
+            drop-shadow(0 1px 0 rgba(10, 9, 6, 0.6));
+
+    position: relative;
+    z-index: 2;
+    margin-bottom: clamp(2rem, 4vh, 3.5rem);
+  }
+
+  // Romanisation + meaning strip
+  &__arabic-meta {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) 0.7s,
+      transform 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) 0.7s;
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+
+    &-left,
+    &-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    &-divider {
+      width: 1px;
+      height: 2.5rem;
+      background: rgba(201, 153, 58, 0.3);
+
+      @media (max-width: 480px) { display: none; }
+    }
+  }
+
+  &__arabic-romanized {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2vw, 1.375rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-sand, #d4b896);
+    letter-spacing: 0.05em;
+  }
+
+  &__arabic-phonetic {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: rgba(242, 235, 217, 0.35);
+  }
+
+  &__arabic-pos {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(201, 153, 58, 0.5);
+  }
+
+  &__arabic-def {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: rgba(242, 235, 217, 0.5);
+  }
+
+  // Section eyebrow
+  &__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: clamp(2.5rem, 5vh, 4rem);
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) 1s,
+      transform 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) 1s;
+    position: relative;
+    z-index: 2;
+
+    &-line {
+      display: block;
+      width: clamp(2rem, 8vw, 6rem);
+      height: 1px;
+      background: rgba(201, 153, 58, 0.3);
+    }
+
+    &-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(242, 235, 217, 0.35);
+      white-space: nowrap;
+    }
+  }
+
+  // ── STORY CHAPTERS ───────────────────────────────────
+  &__story {
+    padding: clamp(4rem, 8vh, 7rem) 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__chapter {
+    display: grid;
+    grid-template-columns: clamp(4rem, 12vw, 10rem) 1fr;
+    gap: 0 clamp(2rem, 5vw, 4rem);
+    padding: clamp(3rem, 6vh, 5rem) clamp(1.5rem, 6vw, 6rem);
+    border-top: 1px solid rgba(201, 153, 58, 0.08);
+    opacity: 0;
+    transform: translateY(2.5rem);
+    transition:
+      opacity 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+    align-items: start;
+
+    &--visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  &__chapter-header {
+    display: contents; // lets children participate in parent grid
+  }
+
+  // Large roman numeral — takes full left column
+  &__chapter-numeral {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 0.9;
+    color: rgba(201, 153, 58, 0.15);
+    letter-spacing: -0.03em;
+    padding-top: 0.15em; // optical alignment with text
+
+    @media (max-width: 640px) {
+      font-size: 3rem;
+    }
+  }
+
+  // Right column groups titles + body
+  &__chapter-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1.75rem;
+  }
+
+  &__chapter-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent, #C9993A);
+  }
+
+  &__chapter-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--color-text, #f2ebd9);
+    margin: 0;
+  }
+
+  &__chapter-title-ar {
+    font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    font-weight: 600;
+    color: rgba(201, 153, 58, 0.3);
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+
+  // Chapter body occupies right column, spanning below numeral
+  &__chapter-body {
+    grid-column: 2;
+    grid-row: 2;
+
+    @media (max-width: 640px) {
+      grid-column: 1;
+    }
+  }
+
+  &__chapter-para {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+    font-weight: 300;
+    line-height: 2;
+    color: rgba(242, 235, 217, 0.5);
+    letter-spacing: 0.02em;
+    margin: 0 0 1.25rem;
+    max-width: 65ch;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // Pull-quote
+  &__chapter-pull {
+    border: none;
+    padding: 1.75rem 0 1.75rem 1.75rem;
+    margin: 2rem 0 0;
+    border-left: 2px solid rgba(201, 153, 58, 0.25);
+    position: relative;
+
+    p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--color-sand, #d4b896);
+      margin: 0;
+    }
+
+    &-bar {
+      position: absolute;
+      left: -1px;
+      top: 0;
+      width: 2px;
+      height: 2.5rem;
+      background: var(--color-accent, #C9993A);
+    }
+  }
+
+  // Chapter separator ornament
+  &__chapter-sep {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    padding-top: clamp(2rem, 4vh, 3rem);
+
+    @media (max-width: 640px) {
+      grid-column: 1;
+    }
+  }
+
+  // ── MANIFESTO CLOSE ──────────────────────────────────
+  &__manifesto {
+    position: relative;
+    margin: clamp(4rem, 8vh, 7rem) clamp(1.5rem, 6vw, 6rem) 0;
+    border: 1px solid rgba(201, 153, 58, 0.12);
+    padding: clamp(4rem, 8vh, 7rem) clamp(2.5rem, 7vw, 7rem);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(3rem);
+    transition:
+      opacity 1.2s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform 1.2s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+
+    &--visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  &__manifesto-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: center;
+    position: relative;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Decorative background Arabic word
+  &__manifesto-arabic {
+    font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 700;
+    line-height: 1;
+    direction: rtl;
+    text-align: center;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201, 153, 58, 0.12);
+    letter-spacing: 0.03em;
+    user-select: none;
+  }
+
+  &__manifesto-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  &__manifesto-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text, #f2ebd9);
+    margin: 0;
+
+    em {
+      font-style: italic;
+      color: var(--color-sand, #d4b896);
+    }
+  }
+
+  &__manifesto-body {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(0.78rem, 1.1vw, 0.875rem);
+    font-weight: 300;
+    line-height: 2;
+    color: rgba(242, 235, 217, 0.45);
+    letter-spacing: 0.015em;
+    margin: 0;
+    max-width: 55ch;
+  }
+
+  &__manifesto-rule {
+    width: 3rem;
+    height: 1px;
+    background: rgba(201, 153, 58, 0.35);
+  }
+
+  &__manifesto-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-text, #f2ebd9);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+
+    svg {
+      transition: transform 0.4s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+    }
+
+    &:hover {
+      color: var(--color-accent, #C9993A);
+      svg { transform: translateX(8px); }
+    }
+  }
+
+  // Corner bracket decorations
+  &__manifesto-bracket {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    border-color: rgba(201, 153, 58, 0.25);
+    border-style: solid;
+
+    &--nw {
+      top: 1.25rem;
+      left: 1.25rem;
+      border-width: 1px 0 0 1px;
+    }
+
+    &--se {
+      bottom: 1.25rem;
+      right: 1.25rem;
+      border-width: 0 1px 1px 0;
+    }
+  }
+}
+
+// ── ANIMATIONS ───────────────────────────────────────────
+@keyframes drawArchLine {
+  to { stroke-dashoffset: 0; }
+}

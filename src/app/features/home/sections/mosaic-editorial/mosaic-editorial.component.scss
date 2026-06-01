@@ -1,0 +1,493 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// MOSAIC EDITORIAL — HBAQ
+// Luxury fashion editorial grid with Arabic identity and Afro-Mediterranean soul
+// ─────────────────────────────────────────────────────────────────────────────
+
+.mosaic {
+  position: relative;
+  background: var(--color-bg, #0a0906);
+  overflow: hidden;
+  padding-bottom: clamp(5rem, 10vh, 8rem);
+
+  // ── SECTION HEADER ──────────────────────────────────
+  &__header {
+    padding: clamp(5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 5rem) clamp(3rem, 5vh, 4rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  &__header-inner {
+    opacity: 0;
+    transform: translateY(2rem);
+    transition:
+      opacity 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform 1s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+
+    &--visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  &__eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent, #C9993A);
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+
+  &__headline {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--color-text, #f2ebd9);
+    margin: 0;
+
+    &-line {
+      font-size: clamp(3rem, 6vw, 6.5rem);
+      display: block;
+
+      &--italic {
+        font-style: italic;
+        color: var(--color-sand, #d4b896);
+        padding-left: clamp(2rem, 8vw, 7rem);
+      }
+    }
+  }
+
+  // ── ARCHITECTURAL GRID LINES ─────────────────────────
+  &__grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  &__grid-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__svg-line {
+    stroke-dashoffset: 1000;
+    animation: drawLine 2.4s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+
+    &--1 { animation-delay: 0.2s; }
+    &--2 { animation-delay: 0.5s; }
+    &--3 { animation-delay: 0.8s; }
+  }
+
+  // ── MOSAIC GRID LAYOUT ───────────────────────────────
+  &__grid {
+    display: grid;
+    position: relative;
+    z-index: 2;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+
+    // Desktop — editorial asymmetric layout
+    grid-template-columns: 1.6fr 1fr 0.9fr;
+    grid-template-rows: 56vh 44vh;
+    grid-template-areas:
+      "primary arabic secondary"
+      "primary copy    tertiary";
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 50vh 38vh 44vh;
+      grid-template-areas:
+        "primary   arabic"
+        "secondary copy"
+        "tertiary  quote";
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 70vw auto auto 60vw auto;
+      grid-template-areas:
+        "primary"
+        "arabic"
+        "copy"
+        "tertiary"
+        "quote";
+    }
+  }
+
+  // ── GENERIC PANEL BASE ───────────────────────────────
+  &__panel {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.9s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform 0.9s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+
+    &--primary   { grid-area: primary;   transform: translateY(3rem); }
+    &--arabic    { grid-area: arabic;    transform: translateX(2rem); }
+    &--secondary { grid-area: secondary; transform: translateY(2rem); }
+    &--copy      { grid-area: copy;      transform: translateX(2rem); }
+    &--tertiary  { grid-area: tertiary;  transform: translateY(3rem); }
+    &--quote     {
+      grid-area: quote;
+      transform: translateY(2rem);
+      @media (min-width: 1025px) {
+        // Quote panel lives inside primary on desktop – override to quote area
+        grid-area: unset;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    &--visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  // ── IMAGE PANELS ─────────────────────────────────────
+  &__panel-img-wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+
+    &:hover .mosaic__panel-img {
+      transform: scale(1.04);
+    }
+  }
+
+  &__panel-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    transition: transform 1.2s var(--transition-luxury, cubic-bezier(0.22, 1, 0.36, 1));
+    display: block;
+
+    &--right { object-position: center right; }
+  }
+
+  &__panel-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(10,9,6,0.6) 0%, transparent 55%),
+      linear-gradient(to right, rgba(10,9,6,0.2) 0%, transparent 40%);
+    pointer-events: none;
+
+    &--light {
+      background: linear-gradient(
+        to bottom,
+        transparent 60%,
+        rgba(10,9,6,0.45) 100%
+      );
+    }
+  }
+
+  // Floating badge on primary panel
+  &__float-badge {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(10,9,6,0.72);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 153, 58, 0.25);
+    padding: 0.625rem 1.25rem;
+    pointer-events: none;
+
+    &-label,
+    &-text {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-text, #f2ebd9);
+    }
+    &-label { color: var(--color-accent, #C9993A); }
+
+    &-divider {
+      display: block;
+      width: 1px;
+      height: 0.875rem;
+      background: rgba(201, 153, 58, 0.35);
+    }
+  }
+
+  // Inline caption
+  &__inline-caption {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(242, 235, 217, 0.45);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  // ── ARABIC IDENTITY PANEL ────────────────────────────
+  &__panel--arabic {
+    background: var(--color-bg, #0a0906);
+    border: 1px solid rgba(201, 153, 58, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__arabic-composition {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  &__arabic-grid {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  &__arabic-grid-svg {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+  }
+
+  &__arabic-text {
+    font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif;
+    font-size: clamp(4.5rem, 9vw, 7.5rem);
+    font-weight: 700;
+    color: var(--color-text, #f2ebd9);
+    line-height: 1;
+    direction: rtl;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 0.04em;
+
+    // Stone-carved emboss simulation
+    text-shadow:
+      0 1px 0 rgba(201, 153, 58, 0.15),
+      0 2px 8px rgba(201, 153, 58, 0.08),
+      0 -1px 0 rgba(10, 9, 6, 0.5);
+
+    background: linear-gradient(
+      160deg,
+      var(--color-text, #f2ebd9) 0%,
+      var(--color-sand, #d4b896) 45%,
+      var(--color-accent, #C9993A) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &__arabic-sub {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__arabic-romanized {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--color-sand, #d4b896);
+  }
+
+  &__arabic-divider {
+    color: rgba(201, 153, 58, 0.4);
+    font-size: 0.7rem;
+  }
+
+  &__arabic-meaning {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(242, 235, 217, 0.45);
+  }
+
+  // ── COPY PANEL ───────────────────────────────────────
+  &__panel--copy {
+    background: rgba(20, 18, 13, 0.7);
+    border-left: 1px solid rgba(201, 153, 58, 0.15);
+    display: flex;
+    align-items: center;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  &__copy-inner {
+    width: 100%;
+  }
+
+  &__copy-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent, #C9993A);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  &__copy-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--color-text, #f2ebd9);
+    margin: 0 0 1.25rem;
+
+    em {
+      font-style: italic;
+      color: var(--color-sand, #d4b896);
+    }
+  }
+
+  &__copy-body {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: rgba(242, 235, 217, 0.55);
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  &__copy-rule {
+    width: 2.5rem;
+    height: 1px;
+    background: rgba(201, 153, 58, 0.35);
+    margin: 1.5rem 0;
+  }
+
+  &__copy-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    &-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.25rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--color-accent, #C9993A);
+    }
+
+    &-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(242, 235, 217, 0.35);
+      line-height: 1.5;
+    }
+  }
+
+  &__stat-divider {
+    width: 1px;
+    height: 2.5rem;
+    background: rgba(201, 153, 58, 0.2);
+  }
+
+  // ── QUOTE PANEL ──────────────────────────────────────
+  &__panel--quote {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid rgba(201, 153, 58, 0.12);
+    margin: 0;
+
+    @media (min-width: 1025px) {
+      // On desktop it's part of the grid as a separate area below tertiary
+      grid-area: unset;
+    }
+  }
+
+  &__ornament {
+    margin-bottom: 1rem;
+  }
+
+  &__quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 1.8vw, 1.375rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--color-sand, #d4b896);
+    margin: 0 0 0.75rem;
+  }
+
+  &__quote-cite {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(242, 235, 217, 0.3);
+    font-style: normal;
+  }
+
+  // ── BOTTOM STRIP (matches hero) ──────────────────────
+  &__strip {
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-gold, #C9993A) 0px,
+      var(--color-gold, #C9993A) 8px,
+      var(--color-terra, #B5613A) 8px,
+      var(--color-terra, #B5613A) 16px,
+      transparent 16px,
+      transparent 20px
+    );
+    opacity: 0.5;
+    margin-top: clamp(3rem, 6vh, 5rem);
+  }
+}
+
+// ── ANIMATIONS ───────────────────────────────────────────
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}

@@ -1,0 +1,140 @@
+.footer {
+  background: var(--color-ash);
+  position: relative;
+
+  &__mosaic-top {
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      #C9993A 0px, #C9993A 6px,
+      #B5613A 6px, #B5613A 12px,
+      #7A5230 12px, #7A5230 18px,
+      transparent 18px, transparent 22px
+    );
+    opacity: 0.5;
+  }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    padding: 4rem clamp(1.5rem, 5vw, 4rem) 3rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  &__brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  &__brand-tagline {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    line-height: 1.7;
+    letter-spacing: 0.05em;
+    color: var(--color-dust);
+  }
+
+  &__nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  &__col-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1.25rem;
+  }
+
+  &__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  &__link {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--color-dust);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    &:hover { color: var(--color-text); }
+  }
+
+  &__newsletter-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  &__newsletter-form {
+    display: flex;
+    border-bottom: 1px solid rgba(201, 153, 58, 0.3);
+  }
+
+  &__newsletter-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0.6rem 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--color-text);
+
+    &::placeholder { color: var(--color-dust); }
+  }
+
+  &__newsletter-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-accent);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+    &:hover { transform: translateX(4px); }
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem clamp(1.5rem, 5vw, 4rem);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__copy,
+  &__origin {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: rgba(140, 123, 104, 0.5);
+  }
+}

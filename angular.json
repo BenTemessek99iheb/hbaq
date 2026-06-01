@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "carthage-studio": {
+    "hbaq": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -39,62 +39,64 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-        "build": {
-          "builder": "@angular/build:application",
-          "options": {
-            "browser": "src/main.ts",
-            "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": []
-            },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
+"build": {
+  "builder": "@angular/build:application",
+  "options": {
+    "browser": "src/main.ts",
+    "tsConfig": "tsconfig.app.json",
+    "inlineStyleLanguage": "scss",
+    "assets": [
+      
+      {
+        "glob": "**/*",
+        "input": "src/assets",
+        "output": "assets"
+      }
+    ],
+    "styles": [
+      "src/styles.scss"
+    ],
+    "server": "src/main.server.ts",
+    "outputMode": "server",
+    "security": {
+      "allowedHosts": []
+    },
+    "ssr": {
+      "entry": "src/server.ts"
+    }
+  },
+  "configurations": {
+    "production": {
+      "budgets": [
+        {
+          "type": "initial",
+          "maximumWarning": "500kB",
+          "maximumError": "1MB"
         },
+        {
+          "type": "anyComponentStyle",
+          "maximumWarning": "4kB",
+          "maximumError": "8kB"
+        }
+      ],
+      "outputHashing": "all"
+    },
+    "development": {
+      "optimization": false,
+      "extractLicenses": false,
+      "sourceMap": true
+    }
+  },
+  "defaultConfiguration": "production"
+},
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "carthage-studio:build:production"
+              "buildTarget": "hbaq:build:production"
             },
             "development": {
-              "buildTarget": "carthage-studio:build:development"
+              "buildTarget": "hbaq:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -1,0 +1,837 @@
+// Product Detail Page — Carthage Studio
+// Full cinematic luxury layout with gallery, tabs, and related products
+
+.product-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-top: var(--nav-height);
+}
+
+// ── BREADCRUMB ──────────────────────────────────────────────────────────────
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem clamp(1.5rem, 5vw, 4rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  &__link {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.625rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-dust);
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover { color: var(--color-accent); }
+  }
+
+  &__sep {
+    color: rgba(140, 123, 104, 0.3);
+    font-size: 0.625rem;
+  }
+
+  &__current {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+}
+
+// ── MAIN GRID ───────────────────────────────────────────────────────────────
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 80vh;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── GALLERY ─────────────────────────────────────────────────────────────────
+.gallery {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 1rem;
+  padding: 2rem clamp(1rem, 3vw, 2rem);
+  position: sticky;
+  top: var(--nav-height);
+  height: calc(100vh - var(--nav-height));
+  align-self: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    position: static;
+    height: auto;
+    padding: 1.5rem;
+  }
+
+  &__thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    @media (max-width: 900px) {
+      flex-direction: row;
+      overflow-x: auto;
+      order: 2;
+    }
+  }
+
+  &__thumb {
+    width: 68px;
+    height: 85px;
+    border: 1px solid transparent;
+    background: var(--color-ash);
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.3s ease, opacity 0.3s ease;
+    flex-shrink: 0;
+    padding: 0;
+
+    &--active {
+      border-color: var(--color-accent);
+    }
+
+    &:hover:not(&--active) {
+      border-color: rgba(201, 153, 58, 0.3);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 900px) {
+      width: 60px;
+      height: 75px;
+    }
+  }
+
+  &__main {
+    position: relative;
+    background: var(--color-ash);
+    overflow: hidden;
+
+    @media (max-width: 900px) { height: 70vw; max-height: 500px; }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0, 1);
+
+    .gallery__main:hover & { transform: scale(1.03); }
+  }
+
+  &__badges {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__counter {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: rgba(242, 235, 217, 0.5);
+    background: rgba(10, 9, 6, 0.4);
+    backdrop-filter: blur(8px);
+    padding: 0.35rem 0.6rem;
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(10, 9, 6, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201, 153, 58, 0.2);
+    color: var(--color-text);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    z-index: 3;
+
+    &:hover {
+      background: rgba(201, 153, 58, 0.2);
+      border-color: var(--color-accent);
+    }
+
+    &--prev { left: 0.75rem; }
+    &--next { right: 0.75rem; }
+  }
+}
+
+// ── BADGES ──────────────────────────────────────────────────────────────────
+.badge {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  display: inline-block;
+
+  &--new     { background: var(--color-accent); color: var(--color-bg); }
+  &--limited { background: var(--color-tyrian, #6B2D3E); color: var(--color-parchment); }
+  &--sale    { background: var(--color-terra); color: var(--color-bg); }
+}
+
+// ── PRODUCT INFO ─────────────────────────────────────────────────────────────
+.product-info {
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+
+  @media (max-width: 900px) {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__category {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  &__origin {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--color-dust);
+
+    &::before { content: '·'; margin-right: 1rem; }
+  }
+
+  &__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  &__review-count {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--color-dust);
+  }
+
+  &__review-link {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  &__price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  &__original-price {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: var(--color-dust);
+    text-decoration: line-through;
+  }
+
+  &__desc {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(242, 235, 217, 0.65);
+    max-width: 500px;
+  }
+
+  &__pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+// ── STARS ──────────────────────────────────────────────────────────────────
+.stars { display: flex; gap: 2px; }
+
+.star {
+  &--full  { color: var(--color-accent); }
+  &--half  { color: var(--color-accent); opacity: 0.6; }
+  &--empty { color: var(--color-dust); }
+}
+
+// ── SIZE SELECTOR ──────────────────────────────────────────────────────────
+.size-selector {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  &__label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-dust);
+  }
+
+  &__selected {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  &__grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+.size-btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  min-width: 48px;
+  height: 44px;
+  padding: 0 1rem;
+  background: transparent;
+  border: 1px solid rgba(242, 235, 217, 0.15);
+  color: var(--color-vellum, #D9CCBA);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0, 1);
+
+  &--active {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  &--sold-out {
+    opacity: 0.3;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+
+  &:not(&--active):not(&--sold-out):hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+// ── STOCK STATUS ──────────────────────────────────────────────────────────
+.stock-status {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &--in  { color: #6DBE87; }
+  &--low { color: var(--color-gold, #C9993A); }
+  &--out { color: rgba(242, 235, 217, 0.3); }
+}
+
+.stock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+
+  &--in  { background: #6DBE87; box-shadow: 0 0 6px rgba(109, 190, 135, 0.5); }
+  &--low { background: var(--color-gold, #C9993A); }
+  &--out { background: rgba(242, 235, 217, 0.2); }
+}
+
+// ── PRODUCT ACTIONS ─────────────────────────────────────────────────────────
+.product-actions {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+
+  @media (max-width: 480px) {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+
+    .cta-btn--buy { grid-column: 1 / -1; }
+  }
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(242, 235, 217, 0.15);
+  height: 52px;
+
+  &__btn {
+    width: 36px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover:not(:disabled) { background: rgba(242, 235, 217, 0.05); }
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
+
+  &__value {
+    min-width: 32px;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--color-text);
+    border-left: 1px solid rgba(242, 235, 217, 0.1);
+    border-right: 1px solid rgba(242, 235, 217, 0.1);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+}
+
+.cta-btn {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  height: 52px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  &--cart {
+    background: var(--color-ash);
+    border-color: rgba(242, 235, 217, 0.15);
+    color: var(--color-text);
+
+    &:not(:disabled):hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    &.cta-btn--success {
+      background: rgba(109, 190, 135, 0.1);
+      border-color: #6DBE87;
+      color: #6DBE87;
+    }
+  }
+
+  &--buy {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+
+    &:not(:disabled):hover {
+      background: var(--color-sand);
+      border-color: var(--color-sand);
+    }
+  }
+}
+
+// ── PILLS ──────────────────────────────────────────────────────────────────
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-dust);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0.4rem 0.8rem;
+
+  svg { opacity: 0.5; }
+}
+
+// ── TABS ────────────────────────────────────────────────────────────────────
+.product-tabs {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem);
+
+  &__nav {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 2.5rem;
+  }
+
+  &__tab {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-dust);
+    background: none;
+    border: none;
+    padding: 1.25rem 0;
+    margin-right: 2.5rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--color-accent);
+      transform: scaleX(0);
+      transition: transform 0.3s cubic-bezier(0.25, 0.1, 0, 1);
+    }
+
+    &--active {
+      color: var(--color-text);
+      &::after { transform: scaleX(1); }
+    }
+
+    &:hover:not(&--active) { color: var(--color-vellum, #D9CCBA); }
+  }
+
+  &__panel {
+    animation: fadeUp 0.5s ease forwards;
+  }
+}
+
+// ── PRODUCT DETAILS LIST ────────────────────────────────────────────────────
+.product-details {
+  &__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    max-width: 600px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(242, 235, 217, 0.7);
+  }
+
+  &__bullet {
+    color: var(--color-accent);
+    font-size: 0.4rem;
+    flex-shrink: 0;
+    transform: translateY(-2px);
+  }
+}
+
+// ── REVIEWS ─────────────────────────────────────────────────────────────────
+.reviews-empty {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: var(--color-dust);
+  padding: 2rem 0;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.review-card {
+  background: var(--color-ash);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.75rem;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  &__author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    background: rgba(201, 153, 58, 0.15);
+    border: 1px solid rgba(201, 153, 58, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  &__author {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text);
+    letter-spacing: 0.05em;
+  }
+
+  &__date {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 300;
+    color: var(--color-dust);
+    letter-spacing: 0.08em;
+    margin-top: 0.15rem;
+  }
+
+  &__stars { display: flex; gap: 2px; }
+
+  &__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+  }
+
+  &__body {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(242, 235, 217, 0.6);
+    margin-bottom: 1rem;
+  }
+
+  &__verified {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6DBE87;
+  }
+}
+
+.review-star {
+  color: rgba(242, 235, 217, 0.2);
+  font-size: 0.875rem;
+
+  &--filled { color: var(--color-accent); }
+}
+
+// ── RELATED PRODUCTS ────────────────────────────────────────────────────────
+.related {
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  &__header {
+    margin-bottom: 2.5rem;
+  }
+
+  &__label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  &__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.related-card {
+  cursor: pointer;
+  outline: none;
+
+  &:focus-visible .related-card__image-wrap {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  &__image-wrap {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: var(--color-ash);
+    margin-bottom: 0.75rem;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0, 1);
+  }
+
+  &:hover &__image { transform: scale(1.05); }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &__name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  &__price {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--color-dust);
+  }
+}
+
+// ── NOT FOUND ──────────────────────────────────────────────────────────────
+.not-found {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-top: var(--nav-height);
+
+  &__text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-dust);
+  }
+
+  &__link {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.625rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2px;
+    transition: opacity 0.3s ease;
+
+    &:hover { opacity: 0.7; }
+  }
+}
+
+// ── ANIMATIONS ─────────────────────────────────────────────────────────────
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: none; }
+}
