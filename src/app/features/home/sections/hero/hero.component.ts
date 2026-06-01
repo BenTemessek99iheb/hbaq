@@ -17,7 +17,7 @@ import { NgStyle } from '@angular/common';
         [ngStyle]="{ transform: 'scale(1.15) translateY(' + (parallaxY()) + 'px)' }"
       >
         <img
-          src="/assets/images/hero/hero-main.jpg"
+          src="assets/images/hero/hero-main.jpg"
           alt=""
           class="hero__bg-image"
           loading="eager"

@@ -87,7 +87,7 @@ interface MosaicPanel {
                 aria-label="Primary editorial image">
           <div class="mosaic__panel-img-wrap">
             <img
-              src="/assets/images/editorial/mosaic-primary.png"
+              src="assets/images/editorial/mosaic-primary.png"
               alt="HBAQ editorial — Mediterranean linen in motion"
               class="mosaic__panel-img"
               loading="lazy"
@@ -145,7 +145,7 @@ interface MosaicPanel {
                 aria-label="Secondary editorial image — artisan detail">
           <div class="mosaic__panel-img-wrap">
             <img
-              src="/assets/images/editorial/mosaic-detail.png"
+              src="assets/images/editorial/mosaic-detail.png"
               alt="HBAQ — artisan textile close-up"
               class="mosaic__panel-img"
               loading="lazy"
@@ -189,7 +189,7 @@ interface MosaicPanel {
                 aria-label="Mediterranean coastal atmosphere">
           <div class="mosaic__panel-img-wrap">
             <img
-              src="/assets/images/editorial/mosaic-coastal.png"
+              src="assets/images/editorial/mosaic-coastal.png"
               alt="Mediterranean coastal light — HBAQ atmosphere"
               class="mosaic__panel-img mosaic__panel-img--right"
               loading="lazy"

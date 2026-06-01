@@ -8,7 +8,9 @@ import {
   signal,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { isPlatformBrowser, NgClass, NgFor } from '@angular/common';
+import { isPlatformBrowser, NgClass, NgFor, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { InViewDirective } from '../../../../shared/directives/in-view.directive';
 
 export interface HeritageChapter {
   number: string;        // Roman numeral
@@ -21,7 +23,7 @@ export interface HeritageChapter {
 @Component({
   selector: 'app-heritage-story',
   standalone: true,
-  imports: [NgClass, NgFor],
+  imports: [NgIf, NgFor, RouterLink, InViewDirective, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="heritage" aria-label="HBAQ — Heritage Story">
