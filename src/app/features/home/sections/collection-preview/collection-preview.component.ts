@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser, NgClass, NgFor, NgIf } from '@angular/common';
+import { AssetService } from '../../../../core/services/asset.service';
 
 export interface CollectionChapter {
   id: string;
@@ -24,12 +25,14 @@ export interface CollectionChapter {
   imageAlt: string;
   orientation: 'portrait' | 'landscape';
   tag: string;             // e.g. "Resort Shirt"
+  
 }
 
 @Component({
+  
   selector: 'app-collection-preview',
   standalone: true,
-  imports: [NgClass, NgFor, NgIf],
+  imports: [NgClass, NgFor],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="collection" aria-label="HBAQ SS 2025 Collection Presentation">
@@ -68,7 +71,7 @@ export interface CollectionChapter {
           <div class="collection__chapter-visual">
             <div class="collection__chapter-img-frame">
               <img
-                [src]="item.imageUrl"
+                [src]="asset.url(item.imageUrl)"
                 [alt]="item.imageAlt"
                 class="collection__chapter-img"
                 loading="lazy"
@@ -162,6 +165,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private host       = inject(ElementRef);
   private observer: IntersectionObserver | null = null;
+  asset = inject(AssetService);
 
   headerVisible  = signal(false);
   ctaVisible     = signal(false);

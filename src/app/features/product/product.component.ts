@@ -22,7 +22,7 @@ import { InViewDirective } from '../../shared/directives/in-view.directive';
   selector: 'app-product',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, NgFor, NgIf, RouterLink, InViewDirective],
+  imports: [NgFor, NgIf, RouterLink],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })

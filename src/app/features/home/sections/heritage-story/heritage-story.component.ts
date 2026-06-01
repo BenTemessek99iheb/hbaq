@@ -23,7 +23,7 @@ export interface HeritageChapter {
 @Component({
   selector: 'app-heritage-story',
   standalone: true,
-  imports: [NgIf, NgFor, RouterLink, InViewDirective, NgClass],
+  imports: [NgIf, NgFor, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="heritage" aria-label="HBAQ — Heritage Story">

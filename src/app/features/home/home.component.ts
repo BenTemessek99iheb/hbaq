@@ -26,6 +26,7 @@ import { CollectionPreviewComponent } from "./sections/collection-preview/collec
       <app-mosaic-editorial />
       <app-heritage-story />
       <app-collection-preview />
+      <app-featured-products />
       <app-footer />
     </main>
   `,

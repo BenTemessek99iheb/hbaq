@@ -26,7 +26,7 @@
   &__mosaic-overlay {
     position: absolute;
     inset: 0;
-    background-image: url('/assets/textures/mosaic-pattern.svg');
+    background-image: url('assets/textures/mosaic-pattern.svg');
     background-size: 120px;
     opacity: 0.04;
     mix-blend-mode: screen;
@@ -47,7 +47,7 @@
     inset: -200%;
     width: 400%;
     height: 400%;
-    background-image: url('/assets/textures/grain.png');
+    background-image: url('assets/textures/grain.png');
     opacity: 0.04;
     pointer-events: none;
     z-index: 5;

@@ -208,7 +208,7 @@
         *ngFor="let rp of relatedProducts()"
         (click)="navigateToProduct(rp.id)"
       >
-        <img [src]="rp.images?.[0]?.url" />
+<img [src]="rp.images[0]?.url" />
         <h3>{{ rp.name }}</h3>
         <span>{{ formatPrice(rp.price) }}</span>
       </article>
