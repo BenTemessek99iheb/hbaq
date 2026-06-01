@@ -13,7 +13,7 @@ import { CollectionPreviewComponent } from "./sections/collection-preview/collec
   imports: [
     HeroComponent,
     BrandStatementComponent,
-    FeaturedProductsComponent,
+    
     FooterComponent,
     MosaicEditorialComponent,
     HeritageStoryComponent,
@@ -26,8 +26,8 @@ import { CollectionPreviewComponent } from "./sections/collection-preview/collec
       <app-mosaic-editorial />
       <app-heritage-story />
       <app-collection-preview />
-      <app-featured-products />
-      <app-footer />
+<!--       <app-featured-products />
+ -->      <app-footer />
     </main>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
