@@ -9,9 +9,6 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser, NgClass, NgFor, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { InViewDirective } from '../../../../shared/directives/in-view.directive';
-
 export interface HeritageChapter {
   number: string;        // Roman numeral
   title: string;
@@ -23,7 +20,7 @@ export interface HeritageChapter {
 @Component({
   selector: 'app-heritage-story',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass],
+  imports: [NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="heritage" aria-label="HBAQ — Heritage Story">
@@ -161,18 +158,43 @@ export interface HeritageChapter {
           </header>
 
           <!-- Body paragraphs -->
-          <div class="heritage__chapter-body">
+         <!--  <div class="heritage__chapter-body">
             <p
               class="heritage__chapter-para"
               *ngFor="let para of chapter.body"
-            >{{ para }}</p>
+            >{{ para }}</p> -->
 
             <!-- Pull-quote -->
-            <blockquote class="heritage__chapter-pull" *ngIf="chapter.pull">
+       <!--      <blockquote class="heritage__chapter-pull" *ngIf="chapter.pull">
               <div class="heritage__chapter-pull-bar" aria-hidden="true"></div>
               <p>{{ chapter.pull }}</p>
             </blockquote>
-          </div>
+          </div> -->
+
+          <!-- Replace *ngFor on paragraphs -->
+@for (para of chapter.body; track para) {
+  <p class="heritage__chapter-para">{{ para }}</p>
+}
+
+<!-- Replace *ngFor on chapters -->
+@for (chapter of chapters(); track chapter.number; let i = $index) {
+  <article
+    class="heritage__chapter"
+    [ngClass]="{ 'heritage__chapter--visible': chapterVisible()[chapter.number] }"
+    [attr.aria-label]="'Chapter ' + chapter.number + ' — ' + chapter.title"
+  >
+    <!-- ... chapter content ... -->
+  </article>
+}
+
+<!-- Replace *ngIf on pull-quote (already done for arabicTitle) -->
+@if (chapter.pull) {
+  <blockquote class="heritage__chapter-pull">
+    <div class="heritage__chapter-pull-bar" aria-hidden="true"></div>
+    <p>{{ chapter.pull }}</p>
+  </blockquote>
+}
+
 
           <!-- Chapter separator ornament -->
           <div class="heritage__chapter-sep" aria-hidden="true">

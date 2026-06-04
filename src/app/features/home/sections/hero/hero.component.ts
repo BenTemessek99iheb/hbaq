@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { NgStyle } from '@angular/common';
-import { AssetService } from '../../../../core/services/asset.service';
+import { CloudinaryService } from '../../../../core/services/cloudinary.service';
+import { MEDIA } from '../../../../core/media/media.registry';
 
 @Component({
   selector: 'app-hero',
@@ -17,8 +18,12 @@ import { AssetService } from '../../../../core/services/asset.service';
         [ngStyle]="{ transform: 'scale(1.15) translateY(' + parallaxY() + 'px)' }"
       >
         <img
-          [src]="asset.url('assets/images/hero/hero-main.jpg')"
+          [src]="cloudinary.hero(MEDIA.hero.main)"
+          [srcset]="cloudinary.srcset(MEDIA.hero.main, [768, 1200, 1600, 2000])"
+          sizes="100vw"
           alt=""
+          width="1600"
+          height="900"
           class="hero__bg-image"
           loading="eager"
           fetchpriority="high"
@@ -64,8 +69,9 @@ import { AssetService } from '../../../../core/services/asset.service';
 export class HeroComponent implements AfterViewInit {
   @ViewChild('heroRef') heroRef!: ElementRef<HTMLElement>;
 
-  private platformId = inject(PLATFORM_ID);
-  asset = inject(AssetService);
+  private platformId     = inject(PLATFORM_ID);
+  protected cloudinary   = inject(CloudinaryService);
+  protected MEDIA        = MEDIA;
 
   parallaxY      = signal(0);
   contentVisible = signal(false);

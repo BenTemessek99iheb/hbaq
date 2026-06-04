@@ -1,15 +1,16 @@
-import { Component, inject } from '@angular/core';
-import { NgFor, NgClass } from '@angular/common';
+/* import { Component, inject } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { InViewDirective } from '../../../../shared/directives/in-view.directive';
-import { AssetService } from '../../../../core/services/asset.service';
+import { CloudinaryService } from '../../../../core/services/cloudinary.service';
+import { MEDIA } from '../../../../core/media/media.registry';
 
 interface Product {
   id: string;
   name: string;
   category: string;
   price: string;
-  image: string;
+  image: string;       // holds the full Cloudinary URL, built at definition time
   size: 'large' | 'medium' | 'small';
   tag?: string;
   styleVibe?: string;
@@ -39,8 +40,12 @@ interface Product {
             <a [routerLink]="['/product', product.id]" class="product-card__link">
               <div class="product-card__image-wrap">
                 <img
-                  [src]="asset.url(product.image)"
+                  [src]="product.image"
+                  [srcset]="cloudinary.srcset(product.imageId, [400, 800, 1200])"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   [alt]="product.name"
+                  width="800"
+                  height="1000"
                   class="product-card__image"
                   loading="lazy"
                 />
@@ -65,48 +70,54 @@ interface Product {
   styleUrls: ['./featured-products.component.scss']
 })
 export class FeaturedProductsComponent {
-  // Inject AssetService — available in template as `asset`
-  asset = inject(AssetService);
+  protected cloudinary = inject(CloudinaryService);
+  protected MEDIA      = MEDIA;
+
   headerVisible = false;
 
-  products: (Product & { visible?: boolean })[] = [
+  // imageId stored separately so srcset can reference the public ID
+  products: (Product & { imageId: string; visible?: boolean })[] = [
     {
       id: 'oversized-tee-01',
       name: 'Kerkouane Tee',
       category: 'Oversized T-Shirt',
       price: '89 TND',
-      image: 'assets/images/products/p1.jpg',
+      imageId: MEDIA.products.p1,
+      image: this.cloudinary.collection(MEDIA.products.p1),
       size: 'large',
       tag: 'New',
-      styleVibe: 'Afro-Asiatic Fusion / Chinoiserie-Tribal Dialogue'
+      styleVibe: 'Afro-Asiatic Fusion / Chinoiserie-Tribal Dialogue',
     },
     {
       id: 'hoodie-01',
       name: 'Baal Hammon Hood',
       category: 'Heavyweight Hoodie',
       price: '190 TND',
-      image: 'assets/images/products/p2.jpg',
+      imageId: MEDIA.products.p2,
+      image: this.cloudinary.collection(MEDIA.products.p2),
       size: 'medium',
-      styleVibe: 'Afro-Centric Tribal Fusion / Modern Resortwear'
+      styleVibe: 'Afro-Centric Tribal Fusion / Modern Resortwear',
     },
     {
       id: 'shirt-01',
       name: 'Tanit Shirt',
       category: 'Luxury Shirt',
       price: '145 TND',
-      image: 'assets/images/products/p3.jpg',
+      imageId: MEDIA.products.p3,
+      image: this.cloudinary.collection(MEDIA.products.p3),
       size: 'medium',
       tag: 'Limited',
-      styleVibe: 'Minimalist Ethno-Luxury / Premium Loungewear'
+      styleVibe: 'Minimalist Ethno-Luxury / Premium Loungewear',
     },
     {
       id: 'jacket-01',
       name: 'Carthage Coach',
       category: 'Light Jacket',
       price: '295 TND',
-      image: 'assets/images/products/p4.jpg',
+      imageId: MEDIA.products.p4,
+      image: this.cloudinary.collection(MEDIA.products.p4),
       size: 'large',
-      styleVibe: 'Heritage Fusion / Conceptual Street-Tradition'
-    }
+      styleVibe: 'Heritage Fusion / Conceptual Street-Tradition',
+    },
   ];
-}
+} */

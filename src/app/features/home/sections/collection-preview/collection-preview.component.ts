@@ -10,7 +10,10 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser, NgClass, NgFor, NgIf } from '@angular/common';
-import { AssetService } from '../../../../core/services/asset.service';
+/* import { AssetService } from '../../../../core/services/asset.service';
+ */
+import { CloudinaryService } from '../../../../core/services/cloudinary.service';
+import { MEDIA } from '../../../../core/media/media.registry';
 
 export interface CollectionChapter {
   id: string;
@@ -70,12 +73,16 @@ export interface CollectionChapter {
           <!-- Image side -->
           <div class="collection__chapter-visual">
             <div class="collection__chapter-img-frame">
-              <img
-                [src]="asset.url(item.imageUrl)"
-                [alt]="item.imageAlt"
-                class="collection__chapter-img"
-                loading="lazy"
-              />
+<img
+  [src]="cloudinary.collection(item.imageUrl)"
+  [srcset]="cloudinary.srcset(item.imageUrl, [600, 900, 1200])"
+  sizes="(max-width: 768px) 100vw, 50vw"
+  [alt]="item.imageAlt"
+  class="collection__chapter-img"
+  loading="lazy"
+  width="900"
+  height="1200"
+/>
               <div class="collection__chapter-img-overlay"></div>
               <!-- Arabic accent floating -->
               <div class="collection__chapter-arabic-float" lang="ar" dir="rtl"
@@ -165,7 +172,10 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private host       = inject(ElementRef);
   private observer: IntersectionObserver | null = null;
-  asset = inject(AssetService);
+/*   asset = inject(AssetService);
+ */
+protected cloudinary = inject(CloudinaryService);
+protected MEDIA = MEDIA;
 
   headerVisible  = signal(false);
   ctaVisible     = signal(false);
@@ -182,7 +192,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
         'A canvas before it is a garment. Each panel carries a printed narrative — part ancient map, part contemporary poem — referencing the trade routes that once connected Carthage to the Silk Road. Worn open, it breathes like a sail on the Mediterranean.',
       culture: 'Tunisian fresco · Silk Road cartography · Phoenician maritime tradition',
       silhouette: 'Oversized boxy fit · dropped shoulder · single chest pocket · camp collar',
-      imageUrl: 'assets/images/collection/narrative-panel-shirt.png',
+imageUrl: MEDIA.collection.narrativePanelShirt,   // chapter I
       imageAlt: 'HBAQ Narrative Panel Oversized Resort Shirt — editorial campaign',
       orientation: 'portrait',
       tag: 'Resort Shirt',
@@ -197,7 +207,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
         'Two islands of craft, separated by continents, united in cloth. The Okinawan tradition of Bingata dye meets Sfaxian embroidery patterns in a garment that asks: what if the trade routes had never been interrupted? A robe of hypothetical history.',
       culture: 'Japanese Bingata dyeing · Sfaxian embroidery · Afro-Asiatic textile crossroads',
       silhouette: 'Ample draped kimono silhouette · wide sleeves · open front · floor-length',
-      imageUrl: 'assets/images/collection/tunisian-japanese-kimono.png',
+imageUrl: MEDIA.collection.tunisianJapaneseKimono, // chapter II
       imageAlt: 'HBAQ Tunisian-Japanese Fusion Ample Kimono — editorial campaign',
       orientation: 'landscape',
       tag: 'Fusion Kimono',
@@ -212,7 +222,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
         'The abaya rewritten — not as a garment of concealment, but of declaration. Elongated to the ankles, open at the front, its architecture references the colonnades of El Jem. To wear it is to walk within a monument.',
       culture: 'North African Islamic dress · Roman colonnade architecture · contemporary wabi-sabi',
       silhouette: 'Longline open duster · relaxed column · collarless · oversized dropped shoulder',
-      imageUrl: 'assets/images/collection/longline-duster-abaya.png',
+imageUrl: MEDIA.collection.longlineDusterAbaya,    // chapter III
       imageAlt: 'HBAQ Longline Open Duster / Modern Abaya — editorial campaign',
       orientation: 'portrait',
       tag: 'Modern Abaya',
@@ -227,7 +237,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
         'Cienfuegos meets Sidi Bou Said. The camp collar — beloved in Havana and the Medina alike — becomes a vessel for Berber geometric print. A garment that understands that the Caribbean and the Mediterranean have always shared the same sun.',
       culture: 'Cuban guayabera · Berber geometric ornament · Mediterranean resort tradition',
       silhouette: 'Relaxed short sleeve · camp collar · front button placket · chest pockets',
-      imageUrl: 'assets/images/collection/cubano-camp-shirt.png',
+imageUrl: MEDIA.collection.cubanoCampShirt,        // chapter IV
       imageAlt: 'HBAQ Cubano Camp Collar Short Sleeve — editorial campaign',
       orientation: 'landscape',
       tag: 'Camp Collar Shirt',
@@ -242,7 +252,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
         'The tunic is the oldest garment. Here it is reborn with graphic prints drawn from sub-Saharan Adinkra symbols layered over Kufic lattices. A spiritual geometry you wear against your skin.',
       culture: 'Ghanaian Adinkra symbolism · Kufic geometric calligraphy · ancient tunic tradition',
       silhouette: 'Relaxed tunic length · split neck or V-neck · boxy body · minimal seaming',
-      imageUrl: 'assets/images/collection/split-neck-tunic.png',
+imageUrl: MEDIA.collection.splitNeckTunic,         // chapter V
       imageAlt: 'HBAQ Split-Neck Graphic Henley / V-Neck Tunic — editorial campaign',
       orientation: 'portrait',
       tag: 'Graphic Tunic',
@@ -257,7 +267,7 @@ export class CollectionPreviewComponent implements AfterViewInit, OnDestroy {
         'The most humble and most radical of the collection. An oversized button-up that wears its artisan references openly — visible stitching, natural dye imperfections, hand-blocked stamps. Its slowness is its luxury.',
       culture: 'Artisan craft tradition · Mediterranean slow fashion · natural dye culture',
       silhouette: 'Oversized relaxed fit · deep dropped shoulder · generous hem · visible craftsmanship',
-      imageUrl: 'assets/images/collection/artisan-dropped-shoulder.png',
+imageUrl: MEDIA.collection.artisanDroppedShoulder, // chapter VI
       imageAlt: 'HBAQ Oversized Artisan Dropped-Shoulder Button-Up — editorial campaign',
       orientation: 'landscape',
       tag: 'Artisan Shirt',
